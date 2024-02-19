@@ -1,0 +1,4 @@
+*.ico
+build/
+dist/
+main.spec

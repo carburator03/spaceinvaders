@@ -1,8 +1,18 @@
 import math
-
+import sys
 import pygame
 import random
 from pygame import mixer
+import os
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 pygame.init()
@@ -10,21 +20,21 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
 pygame.display.set_caption("Space Invaders")
-icon = pygame.image.load("spaceship.png")
+icon = pygame.image.load(resource_path("spaceship.png"))
 pygame.display.set_icon(icon)
-background = pygame.image.load("bg.jpg")
+background = pygame.image.load(resource_path("bg.jpg"))
 
 
 # mixer.music.load("music.wav")
 # mixer.music.play(-1)
 
-playerIMG = pygame.image.load("player.png")
+playerIMG = pygame.image.load(resource_path("player.png"))
 playerX = 400 - 32
 playerY = 480
 playerX_change = 0
 speedP = 0.3
 
-enemyIMG = pygame.image.load("enemy.png")
+enemyIMG = pygame.image.load(resource_path("enemy.png"))
 
 enemies = []
 
@@ -40,7 +50,7 @@ def add_enemy(enemyX, enemyY, speedE, direction, enemyY_move):
 
 add_enemy(random.randint(0, 800-64), 50, 0.3, "right", 40)
 
-bulletIMG = pygame.image.load("bullet.png")
+bulletIMG = pygame.image.load(resource_path("bullet.png"))
 bulletX = 0
 bulletY = 0
 speedB = 0.5
