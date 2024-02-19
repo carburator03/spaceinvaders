@@ -4,6 +4,7 @@ import pygame
 import random
 from pygame import mixer
 
+
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
@@ -12,6 +13,7 @@ pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load("spaceship.png")
 pygame.display.set_icon(icon)
 background = pygame.image.load("bg.jpg")
+
 
 # mixer.music.load("music.wav")
 # mixer.music.play(-1)
@@ -66,7 +68,7 @@ def fire(x, y):
 score_value = 0
 level = 1
 
-font = pygame.font.Font("freesansbold.ttf", 28)
+font = pygame.font.Font("freesansbold.ttf", 26)
 
 
 def show_score_and_level():
@@ -76,10 +78,28 @@ def show_score_and_level():
     screen.blit(score, (10, 40))
 
 
+def game_over():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        screen.fill((32, 32, 32))
+        over_font = pygame.font.Font("freesansbold.ttf", 64)
+        over_text = over_font.render("GAME OVER", True, (255, 255, 255))
+        score_text = over_font.render("Score : " + str(score_value), True, (255, 255, 255))
+        screen.blit(score_text, (200, 350))
+        level_text = over_font.render("Level : " + str(level), True, (255, 255, 255))
+        screen.blit(level_text, (200, 450))
+        screen.blit(over_text, (200, 250))
+
+        pygame.display.update()
+
+
 running = True
 while running:
-    screen.fill((32, 32, 32))
-    # screen.blit(background, (0, 0))
+    # screen.fill((32, 32, 32))
+    screen.blit(background, (0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -140,6 +160,9 @@ while running:
                 level += 1
                 add_enemy(random.randint(0, 800 - 64), 120, 0.3, "left", 60)
                 add_enemy(random.randint(0, 800 - 64), 100, 0.4, "right", 60)
+        elif e["enemyY"] >= 460 - 64:
+            running = False
+            game_over()
         else:
             if e["enemyX"] <= 0:
                 e["enemyX_change"] = e["speedE"]
@@ -156,5 +179,7 @@ while running:
             firing = False
         fire(bulletX, bulletY)
 
+    rectangle = pygame.Rect(0, 460, 800, 5,)
+    pygame.draw.rect(screen, (255, 255, 255), rectangle)
     show_score_and_level()
     pygame.display.update()
